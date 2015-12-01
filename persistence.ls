@@ -64,8 +64,5 @@ random = ({
 
 module.exports = {
   addMovie
+  random
 }
-
-
-err, docs <~ random {rank: 6}
-console.log docs
