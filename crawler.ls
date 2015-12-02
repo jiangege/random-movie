@@ -30,7 +30,9 @@ class MovieCrawler
     request.get {
       url
       encoding: null
-      timeout: 3000 * 10
+      timeout: 3000
+      pool:
+        maxSockets: Infinity
     }, (err, res, body) ~>
       return cb err if err
       try
@@ -109,7 +111,9 @@ class MovieCrawler
       downloadURL
     }
 
-  grab: (icb = ->, fin = ->)->
+  grab: (iterator , fin = ->) ->
+    unless iterator?
+      iterator = (ml, cb)-> cb!
     err, totalColumn <~ @getTotalColumn
     if err
       logError err.message
@@ -121,27 +125,26 @@ class MovieCrawler
       err, totalPage <~ @getTotalPage column
       if err
         logError "抓取#{column}栏目总页数失败"
-        return cb null
-
+        return cb!
       logPerimary "抓取#{column}栏目总页数成功"
-
       async.eachSeries totalPage, (page, cb) ~>
+        _tempMovieList = []
         err, movieList <~ @getSpecPageMovieList page
         if err
           logError "抓取列表失败#{page}"
-          return cb null
+          return cb!
 
         logPerimary "抓取列表成功#{page}"
-
         async.each movieList, (movieUrl, cb) ~>
           err, movie <~ @getMoiveDetail movieUrl
           if err
             logError "抓取电影信息失败#{movieUrl}"
-            return cb null
-          icb movie
+            return cb!
+          _tempMovieList.push movie
           logSuccess "你抓到了 <<#{movie.title}>>"
-          cb null
-        , cb
+          cb!
+        , ->
+          iterator _tempMovieList,cb
       , cb
     , fin
 

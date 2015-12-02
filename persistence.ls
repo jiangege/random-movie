@@ -11,6 +11,8 @@ db = new Db "#{__dirname}/data", searchInArray: true
 
 addMovie = (movie, cb = ->) ->
   col = db.collection \movies
+  (err) <~ col.createIndex "classification", _tiarr: true
+  return cb ... if err
   (err) <~ col.update {
     id: movie.id
   },{
@@ -21,7 +23,7 @@ addMovie = (movie, cb = ->) ->
   cb ...
 
 
-random = ({
+randomMovie = ({
     ciAry = ["恐怖"]
     rank = 6.0
     limit = 1
@@ -29,7 +31,7 @@ random = ({
   col = db.collection \movies
   ciAry = ciAry.map (v)->
     classification:
-      $regex: v
+      $in: v
   err, count <~ col.count {
     $or: ciAry
     rank:
@@ -64,5 +66,5 @@ random = ({
 
 module.exports = {
   addMovie
-  random
+  randomMovie
 }
