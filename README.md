@@ -16,8 +16,6 @@
 命令详解
 --------
 
-注：下文中提到的lx都是指python lixian_cli.py的别名。
-
 常用命令：
 
 * rdm update
