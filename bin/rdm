@@ -2,6 +2,7 @@
 require("livescript");
 require("colors");
 app = require("../app.ls");
+packageJSON = require("../package.json");
 var program = require('commander');
 
 function rank(v){
@@ -18,7 +19,7 @@ function classification(v){
 };
 
 program
-  .version('0.0.1')
+  .version(packageJSON.version);
 
 program
   .command('update')
