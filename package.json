@@ -1,13 +1,13 @@
 {
   "name": "random-movie",
   "version": "1.0.0",
-  "description": "",
-  "main": "shell.js",
+  "description": "随机一些电影资源w",
+  "bin": { "rdm": "./bin/rdm" },
   "repository": {
     "type": "git",
     "url": "git@github.com:jiangege/random-movie.git"
   },
-  "author": "",
+  "author": "jiangege",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jiangege/random-movie/issues"
