@@ -1,3 +1,6 @@
+require! {
+  colors
+}
 logWarning = (msg) ->
   console.log "[WARNING] ".bold.yellow + msg
 

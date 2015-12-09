@@ -15,6 +15,7 @@ require! {
     logSuccess
     logPerimary
   }
+  "html-to-text": htmlToText
 }
 
 
@@ -58,6 +59,7 @@ class MovieCrawler
   smartGet: (url, cb, retry = 0) ->
     err, $ <~ @get url
     if err
+      logError err.message
       @retryGet url, cb, retry
     else
       if $(\#menu).length < 1
@@ -93,6 +95,7 @@ class MovieCrawler
   getMoiveDetail: (specUrl, cb) ->
     err, $ <~ @smartGet specUrl
     return cb err if err
+    link = specUrl
     id = specUrl.match(/(\d+)\.html/)[1]
     title = $(".title_all h1").text!
     rank = (Number) $(".rank").text!
@@ -100,13 +103,15 @@ class MovieCrawler
     downloadURL = []
     $(".co_content8 .position a").each (i, v) ~>
       classification.push $(v).text!
-    $('a[href^="ftp://"]').each (i, v) ~>
-      downloadURL.push $(v).text!
+
+    $('#Zoom table a').each (i, v) ~>
+      downloadURL.push $(v).attr \href
 
     cb null,{
       id
       title
       rank
+      link
       classification
       downloadURL
     }
