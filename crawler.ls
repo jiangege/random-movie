@@ -15,7 +15,6 @@ require! {
     logSuccess
     logPerimary
   }
-  "html-to-text": htmlToText
 }
 
 
